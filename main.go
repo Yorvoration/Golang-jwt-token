@@ -177,14 +177,17 @@ func users(c *gin.Context) {
 	collection := client.Database("test").Collection("users")
 
 	cursor, err := collection.Find(context.Background(), bson.M{})
+	//a := cursor.All(context.Background(), &users)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
+
 	for cursor.Next(context.Background()) {
 		var user User
 		cursor.Decode(&user)
 		users = append(users, user)
+
 	}
 	c.JSON(http.StatusOK, users)
 }
@@ -238,5 +241,4 @@ func createToken(username string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SECRET")))
 	return tokenString
-	
 }
