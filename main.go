@@ -238,4 +238,5 @@ func createToken(username string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("SECRET")))
 	return tokenString
+	
 }
